@@ -1,0 +1,34 @@
+version: "3"
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  cocktail-client:
+    container_name: client-service
+    build: ./Client
+    ports:
+      - 8081:8080
+    depends_on:
+      - cocktails-service
+
+  key-service:
+    container_name: key-service
+    build: ./KeyAPI
+    environment:
+      PORT: 5001
+    ports:
+      - 5001:5001
+    networks:
+      - backend
+
+  cocktails-service:
+    container_name: cocktails-service
+    build: ./API
+    ports:
+      - 8080:8080
+    depends_on:
+      - key-service
+    networks:
+      - backend
