@@ -1,9 +1,11 @@
 const express = require("express");
+const fs = require("fs");
+
 let keys = "";
 
-try {
+if (fs.existsSync("./keys.js")) {
   keys = require("./keys");
-} catch (err) {
+} else {
   keys = { key: process.env.API_KEY } || { key: "1" };
 }
 
